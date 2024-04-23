@@ -438,7 +438,7 @@ def config():
                                  else session['config'])
             return json.dumps(session['config'])
         else:
-            return json.dumps({})
+            return (json.dumps({}), {'Content-Type': 'application/json'})
     elif not config_disabled:
         config_data = request.form.to_dict()
         if 'url' not in config_data or not config_data['url']:
