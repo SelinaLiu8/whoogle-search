@@ -25,7 +25,7 @@ def translate(v: str, lang: str) -> str:
 
     lingva_req = f'{lingva}/{lang}/{v}'
 
-    response = requests.get(lingva_req).json()
+    response = requests.get(lingva_req, timeout=60).json()
 
     if 'translation' in response:
         return response['translation']
