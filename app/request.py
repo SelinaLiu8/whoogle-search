@@ -11,6 +11,7 @@ from stem import Signal, SocketError
 from stem.connection import AuthenticationFailure
 from stem.control import Controller
 from stem.connection import authenticate_cookie, authenticate_password
+from security import safe_requests
 
 MAPS_URL = 'https://maps.google.com/maps'
 AUTOCOMPLETE_URL = ('https://suggestqueries.google.com/'
@@ -336,8 +337,7 @@ class Request:
                     "Error raised during Tor connection validation",
                     disable=True)
 
-        response = requests.get(
-            (base_url or self.search_url) + query,
+        response = safe_requests.get((base_url or self.search_url) + query,
             proxies=self.proxies,
             headers=headers,
             cookies=cookies)

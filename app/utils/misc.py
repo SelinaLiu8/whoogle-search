@@ -6,7 +6,7 @@ import hashlib
 import io
 import os
 import re
-from requests import exceptions, get
+from security.safe_requests import exceptions, get
 from urllib.parse import urlparse
 
 ddg_favicon_site = 'http://icons.duckduckgo.com/ip2'
