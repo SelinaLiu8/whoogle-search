@@ -2,7 +2,6 @@ from app.models.config import Config
 from app.utils.misc import read_config_bool
 from datetime import datetime
 from defusedxml import ElementTree as ET
-import random
 import requests
 from requests import Response, ConnectionError
 import urllib.parse as urlparse
@@ -11,6 +10,7 @@ from stem import Signal, SocketError
 from stem.connection import AuthenticationFailure
 from stem.control import Controller
 from stem.connection import authenticate_cookie, authenticate_password
+import secrets
 
 MAPS_URL = 'https://maps.google.com/maps'
 AUTOCOMPLETE_URL = ('https://suggestqueries.google.com/'
@@ -81,8 +81,8 @@ def gen_user_agent(is_mobile) -> str:
     if user_agent_mobile and is_mobile:
         return user_agent_mobile
 
-    firefox = random.choice(['Choir', 'Squier', 'Higher', 'Wire']) + 'fox'
-    linux = random.choice(['Win', 'Sin', 'Gin', 'Fin', 'Kin']) + 'ux'
+    firefox = secrets.choice(['Choir', 'Squier', 'Higher', 'Wire']) + 'fox'
+    linux = secrets.choice(['Win', 'Sin', 'Gin', 'Fin', 'Kin']) + 'ux'
 
     if is_mobile:
         return MOBILE_UA.format("Mozilla", firefox)
