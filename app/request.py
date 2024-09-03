@@ -323,7 +323,7 @@ class Request:
         if self.tor:
             try:
                 tor_check = requests.get('https://check.torproject.org/',
-                                         proxies=self.proxies, headers=headers)
+                                         proxies=self.proxies, headers=headers, timeout=60)
                 self.tor_valid = 'Congratulations' in tor_check.text
 
                 if not self.tor_valid:
@@ -340,7 +340,7 @@ class Request:
             (base_url or self.search_url) + query,
             proxies=self.proxies,
             headers=headers,
-            cookies=cookies)
+            cookies=cookies, timeout=60)
 
         # Retry query with new identity if using Tor (max 10 attempts)
         if 'form id="captcha-form"' in response.text and self.tor:
