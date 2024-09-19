@@ -3,7 +3,6 @@ from app.utils.misc import read_config_bool
 from datetime import datetime
 from defusedxml import ElementTree as ET
 import random
-import requests
 from requests import Response, ConnectionError
 import urllib.parse as urlparse
 import os
@@ -11,6 +10,7 @@ from stem import Signal, SocketError
 from stem.connection import AuthenticationFailure
 from stem.control import Controller
 from stem.connection import authenticate_cookie, authenticate_password
+from security import safe_requests
 
 MAPS_URL = 'https://maps.google.com/maps'
 AUTOCOMPLETE_URL = ('https://suggestqueries.google.com/'
@@ -322,7 +322,7 @@ class Request:
         # Make sure that the tor connection is valid, if enabled
         if self.tor:
             try:
-                tor_check = requests.get('https://check.torproject.org/',
+                tor_check = safe_requests.get('https://check.torproject.org/',
                                          proxies=self.proxies, headers=headers)
                 self.tor_valid = 'Congratulations' in tor_check.text
 
@@ -336,7 +336,7 @@ class Request:
                     "Error raised during Tor connection validation",
                     disable=True)
 
-        response = requests.get(
+        response = safe_requests.get(
             (base_url or self.search_url) + query,
             proxies=self.proxies,
             headers=headers,
