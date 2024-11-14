@@ -37,6 +37,7 @@ from requests.models import PreparedRequest
 from cryptography.fernet import Fernet, InvalidToken
 from cryptography.exceptions import InvalidSignature
 from werkzeug.datastructures import MultiDict
+import fickling
 
 ac_var = 'WHOOGLE_AUTOCOMPLETE'
 autocomplete_enabled = os.getenv(ac_var, '1')
@@ -104,8 +105,8 @@ def session_required(f):
                     continue
 
                 with open(file_path, 'rb') as session_file:
-                    _ = pickle.load(session_file)
-                    data = pickle.load(session_file)
+                    _ = fickling.load(session_file)
+                    data = fickling.load(session_file)
                     if isinstance(data, dict) and 'valid' in data:
                         continue
                     invalid_sessions.append(file_path)
@@ -433,7 +434,7 @@ def config():
     elif request.method == 'PUT' and not config_disabled:
         if name:
             config_pkl = os.path.join(app.config['CONFIG_PATH'], name)
-            session['config'] = (pickle.load(open(config_pkl, 'rb'))
+            session['config'] = (fickling.load(open(config_pkl, 'rb'))
                                  if os.path.exists(config_pkl)
                                  else session['config'])
             return json.dumps(session['config'])
