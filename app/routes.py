@@ -436,7 +436,7 @@ def config():
             session['config'] = (pickle.load(open(config_pkl, 'rb'))
                                  if os.path.exists(config_pkl)
                                  else session['config'])
-            return json.dumps(session['config'])
+            return (json.dumps(session['config']), {'Content-Type': 'application/json'})
         else:
             return (json.dumps({}), {'Content-Type': 'application/json'})
     elif not config_disabled:
