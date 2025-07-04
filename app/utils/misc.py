@@ -6,8 +6,9 @@ import hashlib
 import io
 import os
 import re
-from requests import exceptions, get
+from requests import exceptions
 from urllib.parse import urlparse
+from security import safe_requests
 
 ddg_favicon_site = 'http://icons.duckduckgo.com/ip2'
 
@@ -36,7 +37,7 @@ def fetch_favicon(url: str) -> bytes:
     """
     domain = urlparse(url).netloc
 
-    response = get(f'{ddg_favicon_site}/{domain}.ico')
+    response = safe_requests.get(f'{ddg_favicon_site}/{domain}.ico')
 
     if response.status_code == 200 and len(response.content) > 0:
         tmp_mem = io.BytesIO()
@@ -99,7 +100,7 @@ def get_proxy_host_url(r: Request, default: str, root=False) -> str:
 def check_for_update(version_url: str, current: str) -> int:
     # Check for the latest version of Whoogle
     try:
-        update = bsoup(get(version_url).text, 'html.parser')
+        update = bsoup(safe_requests.get(version_url).text, 'html.parser')
         latest = update.select_one('[class="Link--primary"]').string[1:]
         current = int(''.join(filter(str.isdigit, current)))
         latest = int(''.join(filter(str.isdigit, latest)))
